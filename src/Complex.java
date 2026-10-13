@@ -39,6 +39,19 @@ public class Complex {
     }
 
     public String toString() {
+        if (re == 0 && im == 0) {
+            return "0";
+        }
+        if (im == 0) {
+            return String.valueOf(re);
+        }
+        if (re == 0) {
+            if (im > 0) {
+                return im + "i";
+            } else {
+                return "-" + (-im) + "i";
+            }
+        }
         if (im >= 0) {
             return re + "+" + Math.abs(im) + "i";
         }
