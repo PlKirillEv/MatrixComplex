@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.Locale;
+import java.util.InputMismatchException;
 
 public class Main {
 
@@ -28,19 +29,19 @@ public class Main {
             System.out.println("0  - Выход");
             System.out.print("Ваш выбор: ");
 
-            int choice = scan.nextInt();
-
-            if (choice == 0) {
-                System.out.println("Программа завершена");
-                break;
-            }
-
-            if (choice < 1 || choice > 10) {
-                System.out.println("Неверный выбор! Попробуйте снова.");
-                continue;
-            }
-
             try {
+                int choice = scan.nextInt();
+
+                if (choice == 0) {
+                    System.out.println("Программа завершена");
+                    break;
+                }
+
+                if (choice < 1 || choice > 10) {
+                    System.out.println("Неверный выбор! Попробуйте снова.");
+                    continue;
+                }
+
                 switch (choice) {
                     case 1:
                         A = readMatrix(scan, "A");
@@ -79,15 +80,15 @@ public class Main {
                         System.out.println(A.inverse());
                         break;
                 }
-            }
-            catch (IllegalArgumentException aex) {
+            } catch (IllegalArgumentException aex) {
                 System.out.println("\nОшибка: " + aex.getMessage());
-            }
-            catch (ArithmeticException aex) {
+            } catch (ArithmeticException aex) {
                 System.out.println("\nОшибка: " + aex.getMessage());
-            }
-            catch (NullPointerException e) {
+            } catch (NullPointerException e) {
                 System.out.println("\nОшибка: сначала введите матрицы A и B!");
+            } catch (InputMismatchException e) {
+                scan.nextLine();
+                System.out.println("\nОшибка ввода: нужно вводить числа!");
             }
         }
         scan.close();
