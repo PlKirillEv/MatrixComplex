@@ -4,13 +4,13 @@ import java.util.InputMismatchException;
 
 public class Main {
 
+    private static Matrix A = null;
+    private static Matrix B = null;
+
     public static void main(String[] args) {
-        
+
         Scanner scan = new Scanner(System.in);
         scan.useLocale(Locale.US);
-        
-        Matrix A = null;
-        Matrix B = null;
 
         System.out.println("Операции над матрицами с комплексными числами");
 
@@ -31,6 +31,7 @@ public class Main {
 
             try {
                 int choice = scan.nextInt();
+                scan.nextLine();
 
                 if (choice == 0) {
                     System.out.println("Программа завершена");
@@ -53,31 +54,36 @@ public class Main {
                         showMatrices(A, B);
                         break;
                     case 4:
-                        System.out.println("\nA + B:");
-                        System.out.println(A.add(B));
+                        checkNull(A, "A");
+                        checkNull(B, "B");
+                        resSave(scan, A.add(B), "A + B");
                         break;
                     case 5:
-                        System.out.println("\nA - B:");
-                        System.out.println(A.subtract(B));
+                        checkNull(A, "A");
+                        checkNull(B, "B");
+                        resSave(scan, A.subtract(B), "A - B");
                         break;
                     case 6:
-                        System.out.println("\nA * B:");
-                        System.out.println(A.multiply(B));
+                        checkNull(A, "A");
+                        checkNull(B, "B");
+                        resSave(scan, A.multiply(B), "A * B");
                         break;
                     case 7:
-                        System.out.println("\nA / B:");
-                        System.out.println(A.divide(B));
+                        checkNull(A, "A");
+                        checkNull(B, "B");
+                        resSave(scan, A.divide(B), "A / B");
                         break;
                     case 8:
-                        System.out.println("\nA^T:");
-                        System.out.println(A.transpose());
+                        checkNull(A, "A");
+                        resSave(scan, A.transpose(), "A^T");
                         break;
                     case 9:
+                        checkNull(A, "A");
                         System.out.println("\nОпределитель A: " + A.determinant());
                         break;
                     case 10:
-                        System.out.println("\nA^(-1):");
-                        System.out.println(A.inverse());
+                        checkNull(A, "A");
+                        resSave(scan, A.inverse(), "A^(-1)");
                         break;
                 }
             } catch (IllegalArgumentException aex) {
@@ -92,6 +98,30 @@ public class Main {
             }
         }
         scan.close();
+    }
+
+    private static void resSave(Scanner scan, Matrix result, String title) {
+        System.out.println("\n" + title + ":");
+        System.out.println(result);
+
+        System.out.print("Сохранить результат в A или B? (A/B/Enter — пропустить): ");
+        String answer = scan.nextLine().trim().toUpperCase();
+
+        if (answer.equals("A")) {
+            A = result;
+            System.out.println("Результат сохранён в A");
+        } else if (answer.equals("B")) {
+            B = result;
+            System.out.println("Результат сохранён в B");
+        } else {
+            System.out.println("Результат не сохранён");
+        }
+    }
+
+    private static void checkNull(Matrix m, String name) {
+        if (m == null) {
+            throw new NullPointerException("Матрица " + name + " не задана!");
+        }
     }
 
     private static Matrix readMatrix(Scanner scan, String name) {
